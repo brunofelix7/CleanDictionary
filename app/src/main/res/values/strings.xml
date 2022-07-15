@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">CleanDictionary</string>
+    <!-- App name -->
+    <string name="app_name">Clean Dictionary</string>
 </resources>
