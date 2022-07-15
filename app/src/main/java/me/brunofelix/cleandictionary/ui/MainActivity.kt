@@ -17,6 +17,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun uiSetup() {
+        setTheme(R.style.Theme_CleanDictionary)
+        window.setBackgroundDrawableResource(R.drawable.bg_gradient)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
     }
