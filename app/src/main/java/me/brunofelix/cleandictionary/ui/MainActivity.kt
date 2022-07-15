@@ -2,6 +2,7 @@ package me.brunofelix.cleandictionary.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import dagger.hilt.android.AndroidEntryPoint
 import me.brunofelix.cleandictionary.R
 import me.brunofelix.cleandictionary.databinding.ActivityMainBinding
@@ -22,5 +23,21 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.toolbar.inflateMenu(R.menu.main_menu)
+        binding.toolbar.setOnMenuItemClickListener {
+            when(it.itemId) {
+                R.id.action_dark_mode -> {
+                    // TODO: call bottom sheets dialog
+                    Log.d("Bruno", "action dark mode")
+                    true
+                }
+                else -> false
+            }
+        }
+
+        binding.btnSearch.setOnClickListener {
+            Log.d("Bruno", "Search word")
+        }
     }
 }
