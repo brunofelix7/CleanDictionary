@@ -8,5 +8,5 @@ import retrofit2.http.Path
 interface DictionaryApi {
 
     @GET("api/v2/entries/en/{word}")
-    suspend fun getWordInfo(@Path("word") word: String) : Response<List<WordInfoDto>>
+    suspend fun getWordInfo(@Path("word") word: String) : List<WordInfoDto>
 }

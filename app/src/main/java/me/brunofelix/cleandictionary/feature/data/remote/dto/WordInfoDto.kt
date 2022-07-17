@@ -1,6 +1,6 @@
 package me.brunofelix.cleandictionary.feature.data.remote.dto
 
-import me.brunofelix.cleandictionary.feature.domain.model.WordInfo
+import me.brunofelix.cleandictionary.feature.data.local.entity.WordInfoEntity
 
 data class WordInfoDto(
     val meanings: List<MeaningDto>,
@@ -9,8 +9,8 @@ data class WordInfoDto(
     val phonetics: List<PhoneticDto>,
     val word: String
 ) {
-    fun toWordInfo(): WordInfo {
-        return WordInfo(
+    fun toWordInfoEntity(): WordInfoEntity {
+        return WordInfoEntity(
             meanings = meanings.map { it.toMeaning() },
             origin = origin,
             phonetic = phonetic,
