@@ -31,7 +31,6 @@ class WordInfoViewModel @Inject constructor(
         _searchQuery.value = query
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
-            delay(500L)
             getWordInfo.invoke(query)
                 .onEach { result ->
                     when(result) {

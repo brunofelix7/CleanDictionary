@@ -27,7 +27,7 @@ object WordInfoApp {
     @Singleton
     fun provideGetWordInfoUseCase(repository: WordInfoRepository): GetWordInfo =
         GetWordInfo(repository)
-    
+
     @Provides
     @Singleton
     fun provideWordInfoRepository(
