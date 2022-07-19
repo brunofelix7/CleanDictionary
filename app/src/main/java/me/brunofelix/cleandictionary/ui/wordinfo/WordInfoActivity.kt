@@ -54,13 +54,13 @@ class WordInfoActivity : AppCompatActivity() {
         binding.btnSearch.setOnClickListener {
             hideKeyboard()
             clearFields()
-            viewModel.onSearch(binding.textInputWord.text.toString())
+            viewModel.onSearch(binding.textInputWord.text.toString().trim().lowercase())
         }
 
         binding.textInputWord.setOnEditorActionListener { textView, i, keyEvent ->
             hideKeyboard()
             clearFields()
-            viewModel.onSearch(binding.textInputWord.text.toString().trim())
+            viewModel.onSearch(binding.textInputWord.text.toString().trim().lowercase())
             true
         }
     }
