@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import me.brunofelix.cleandictionary.R
+import me.brunofelix.cleandictionary.core.util.playAudio
 import me.brunofelix.cleandictionary.databinding.ActivityWordInfoBinding
 import me.brunofelix.cleandictionary.extension.hideKeyboard
 import me.brunofelix.cleandictionary.extension.showToast
@@ -76,7 +77,8 @@ class WordInfoActivity : AppCompatActivity() {
             viewModel.state.collect { state ->
                 binding.progressBar.isVisible = state.isLoading
 
-                var meaningsList: List<Meaning> = mutableListOf()
+                var meaningsList: List<Meaning> = emptyList()
+                var audioUrl = ""
 
                 if (state.wordInfoItems.isEmpty()) {
                     binding.contentLayout.isVisible = false
@@ -89,34 +91,44 @@ class WordInfoActivity : AppCompatActivity() {
 
                         meaningsList = item.meanings
 
-                        for (item in meaningsList) {
-                            when (item.partOfSpeech) {
+                        for (phonetic in item.phonetics) {
+                            if (phonetic.audio.isNotEmpty()) {
+                                audioUrl = phonetic.audio
+                            }
+                        }
+
+                        for (meaning in meaningsList) {
+                            when (meaning.partOfSpeech) {
                                 "noun" -> {
                                     binding.nounLayout.isVisible = true
-                                    binding.textNoun.text = item.partOfSpeech
-                                    for (definition in item.definitions) {
+                                    binding.textNoun.text = meaning.partOfSpeech
+                                    for (definition in meaning.definitions) {
                                         binding.textNounDefinitions.text =
                                             "${binding.textNounDefinitions.text}" + "- " + definition.definition + "\n"
                                     }
                                 }
                                 "verb" -> {
                                     binding.verbLayout.isVisible = true
-                                    binding.textVerb.text = item.partOfSpeech
-                                    for (definition in item.definitions) {
+                                    binding.textVerb.text = meaning.partOfSpeech
+                                    for (definition in meaning.definitions) {
                                         binding.textVerbDefinitions.text =
                                             "${binding.textVerbDefinitions.text}" + "- " + definition.definition + "\n"
                                     }
                                 }
                                 "adjective" -> {
                                     binding.adjectiveLayout.isVisible = true
-                                    binding.textAdjective.text = item.partOfSpeech
-                                    for (definition in item.definitions) {
+                                    binding.textAdjective.text = meaning.partOfSpeech
+                                    for (definition in meaning.definitions) {
                                         binding.textAdjectiveDefinitions.text =
                                             "${binding.textAdjectiveDefinitions.text}" + "- " + definition.definition + "\n"
                                     }
                                 }
                             }
                         }
+                    }
+
+                    binding.imgAudio.setOnClickListener {
+                        playAudio(url = audioUrl)
                     }
                 }
             }

@@ -110,10 +110,12 @@
 
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/img_audio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:clickable="true"
+                android:focusable="true"
                 android:src="@drawable/ic_audio"
                 app:layout_constraintBottom_toBottomOf="@+id/text_phonetic"
                 app:layout_constraintStart_toEndOf="@+id/text_phonetic"
