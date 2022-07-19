@@ -6,13 +6,13 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
+import androidx.preference.PreferenceManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import me.brunofelix.cleandictionary.R
 import me.brunofelix.cleandictionary.core.util.playAudio
 import me.brunofelix.cleandictionary.databinding.ActivityWordInfoBinding
-import me.brunofelix.cleandictionary.extension.hideKeyboard
-import me.brunofelix.cleandictionary.extension.showToast
+import me.brunofelix.cleandictionary.extension.*
 import me.brunofelix.cleandictionary.feature.domain.model.Meaning
 import me.brunofelix.cleandictionary.feature.presentation.UIEvent
 import me.brunofelix.cleandictionary.feature.presentation.WordInfoViewModel
@@ -40,7 +40,11 @@ class WordInfoActivity : AppCompatActivity() {
         binding.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.action_dark_mode -> {
-                    // TODO: call bottom sheets dialog
+                    if (isInDarkMode()) {
+                        updateTheme(setDarkMode = false)
+                    } else {
+                        updateTheme(setDarkMode = true)
+                    }
                     true
                 }
                 else -> false
@@ -56,7 +60,7 @@ class WordInfoActivity : AppCompatActivity() {
         binding.textInputWord.setOnEditorActionListener { textView, i, keyEvent ->
             hideKeyboard()
             clearFields()
-            viewModel.onSearch(binding.textInputWord.text.toString())
+            viewModel.onSearch(binding.textInputWord.text.toString().trim())
             true
         }
     }
