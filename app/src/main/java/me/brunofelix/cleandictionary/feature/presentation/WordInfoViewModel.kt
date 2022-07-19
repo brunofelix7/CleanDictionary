@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import me.brunofelix.cleandictionary.core.util.Resource
@@ -16,9 +15,6 @@ class WordInfoViewModel @Inject constructor(
     private val getWordInfo: GetWordInfo
 ) : ViewModel() {
 
-    private val _searchQuery = MutableStateFlow("")
-    val searchQuery: StateFlow<String> = _searchQuery
-
     private val _state = MutableStateFlow(WordInfoState())
     val state: StateFlow<WordInfoState> = _state
 
@@ -28,26 +24,24 @@ class WordInfoViewModel @Inject constructor(
     private var searchJob: Job? = null
 
     fun onSearch(query: String) {
-        _searchQuery.value = query
-        searchJob?.cancel()
         searchJob = viewModelScope.launch {
             getWordInfo.invoke(query)
                 .onEach { result ->
                     when(result) {
                         is Resource.Loading -> {
-                            _state.value.copy(
+                            _state.value = WordInfoState(
                                 isLoading = true,
                                 wordInfoItems = result.data ?: emptyList()
                             )
                         }
                         is Resource.Success -> {
-                            _state.value.copy(
+                            _state.value = WordInfoState(
                                 isLoading = false,
                                 wordInfoItems = result.data ?: emptyList()
                             )
                         }
                         is Resource.Error -> {
-                            _state.value.copy(
+                            _state.value = WordInfoState(
                                 isLoading = false,
                                 wordInfoItems = result.data ?: emptyList()
                             )
@@ -58,5 +52,10 @@ class WordInfoViewModel @Inject constructor(
                     }
                 }.launchIn(this)
         }
+    }
+
+    override fun onCleared() {
+        searchJob?.cancel()
+        super.onCleared()
     }
 }

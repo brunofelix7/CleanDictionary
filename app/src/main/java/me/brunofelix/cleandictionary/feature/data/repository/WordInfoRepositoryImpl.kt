@@ -17,7 +17,7 @@ class WordInfoRepositoryImpl constructor(
 
     override fun getWordInfo(word: String): Flow<Resource<List<WordInfo>>> = flow {
         val wordInfos = dao.getWordInfos(word).map { it.toWordInfo() }
-        emit(Resource.Loading(data = wordInfos))
+        emit(Resource.Loading())
 
         try {
             val remoteWordInfos = api.getWordInfo(word)
