@@ -6,7 +6,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
-import androidx.preference.PreferenceManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import me.brunofelix.cleandictionary.R
@@ -71,6 +70,7 @@ class WordInfoActivity : AppCompatActivity() {
             viewModel.eventFlow.collect { event ->
                 when (event) {
                     is UIEvent.ShowSnackbar -> {
+                        binding.imgAudio.isVisible = false
                         showToast(event.message)
                     }
                 }
@@ -87,6 +87,7 @@ class WordInfoActivity : AppCompatActivity() {
                 if (state.wordInfoItems.isEmpty()) {
                     binding.contentLayout.isVisible = false
                 } else {
+                    binding.imgAudio.isVisible = true
                     binding.contentLayout.isVisible = true
 
                     for (item in state.wordInfoItems) {
@@ -109,6 +110,12 @@ class WordInfoActivity : AppCompatActivity() {
                                     for (definition in meaning.definitions) {
                                         binding.textNounDefinitions.text =
                                             "${binding.textNounDefinitions.text}" + "- " + definition.definition + "\n"
+
+                                        if (!definition.example.isNullOrEmpty()) {
+                                            binding.textNounDefinitions.text =
+                                                "${binding.textNounDefinitions.text}" + "- " + definition.definition + "\n" +
+                                                        "Examples: ${definition.example}\n\n"
+                                        }
                                     }
                                 }
                                 "verb" -> {
@@ -117,6 +124,12 @@ class WordInfoActivity : AppCompatActivity() {
                                     for (definition in meaning.definitions) {
                                         binding.textVerbDefinitions.text =
                                             "${binding.textVerbDefinitions.text}" + "- " + definition.definition + "\n"
+
+                                        if (!definition.example.isNullOrEmpty()) {
+                                            binding.textVerbDefinitions.text =
+                                                "${binding.textVerbDefinitions.text}" + "- " + definition.definition + "\n" +
+                                                        "Examples: ${definition.example}\n\n"
+                                        }
                                     }
                                 }
                                 "adjective" -> {
@@ -125,6 +138,12 @@ class WordInfoActivity : AppCompatActivity() {
                                     for (definition in meaning.definitions) {
                                         binding.textAdjectiveDefinitions.text =
                                             "${binding.textAdjectiveDefinitions.text}" + "- " + definition.definition + "\n"
+
+                                        if (!definition.example.isNullOrEmpty()) {
+                                            binding.textAdjectiveDefinitions.text =
+                                                "${binding.textAdjectiveDefinitions.text}" + "- " + definition.definition + "\n" +
+                                                        "Examples: ${definition.example}\n\n"
+                                        }
                                     }
                                 }
                             }
@@ -146,5 +165,10 @@ class WordInfoActivity : AppCompatActivity() {
         binding.textNounDefinitions.text = ""
         binding.textVerbDefinitions.text = ""
         binding.textAdjectiveDefinitions.text = ""
+
+        binding.contentLayout.isVisible = false
+        binding.nounLayout.isVisible = false
+        binding.verbLayout.isVisible = false
+        binding.adjectiveLayout.isVisible = false
     }
 }

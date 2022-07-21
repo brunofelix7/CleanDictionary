@@ -21,4 +21,8 @@
         <!-- Background Tint color. -->
         <item name="android:indeterminateTint">@color/black</item>
     </style>
+
+    <style name="ButtonStyle">
+        <item name="android:background">@drawable/bg_btn_rounded</item>
+    </style>
 </resources>
